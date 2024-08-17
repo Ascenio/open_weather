@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
         if (state is LoginValidCredentials) {
           ScaffoldMessenger.of(context)
               .showSnackBar(const SnackBar(content: Text('Welcome!')));
-        } else {
+        } else if (state is LoginInvalidCredentials) {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Wrong email or password!')));
         }
