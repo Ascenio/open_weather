@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_weather/authentication/presentation/cubits/login_cubit.dart';
 import 'package:open_weather/authentication/presentation/pages/login_page.dart';
-import 'package:open_weather/core/routes.dart';
+import 'package:open_weather/core/config/routes.dart';
 import 'package:open_weather/weather/data/repositories/remote_weather_repository.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
 import 'package:open_weather/weather/presentation/pages/weather_page.dart';
