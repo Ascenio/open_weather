@@ -5,9 +5,12 @@ import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_state.dart';
 import 'package:open_weather/weather/presentation/widgets/custom_colors.dart';
 import 'package:open_weather/weather/presentation/widgets/detailed_icon.dart';
+import 'package:open_weather/weather/presentation/widgets/dialogs/location_failure_dialog.dart';
+import 'package:open_weather/weather/presentation/widgets/failure_mappers.dart';
 import 'package:open_weather/weather/presentation/widgets/forecast_graph/forecast_graph.dart';
 import 'package:open_weather/weather/presentation/widgets/icons/weather_icon.dart';
 import 'package:open_weather/weather/presentation/widgets/icons/wind_icon.dart';
+import 'package:open_weather/weather/presentation/widgets/try_again_widget.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -28,32 +31,25 @@ class _WeatherPageState extends State<WeatherPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: BlocBuilder<WeatherCubit, WeatherState>(
+        child: BlocConsumer<WeatherCubit, WeatherState>(
+          listener: (context, state) {
+            if (state is WeatherLocationFailure) {
+              showLocationFailureDialog(
+                context: context,
+                failure: state.failure,
+              );
+            }
+          },
           builder: (context, state) {
             return switch (state) {
               WeatherLoading() => const LoadingIndicator(),
-              WeatherFailure() => Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'Ops, something went wrong!',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        child: FilledButton.icon(
-                          icon: const Icon(Icons.refresh),
-                          iconAlignment: IconAlignment.end,
-                          label: const Text('Try again'),
-                          onPressed: context.read<WeatherCubit>().initialize,
-                        ),
-                      )
-                    ],
-                  ),
+              WeatherLocationFailure() => TryAgainWidget(
+                  error: locationFailureToString(state.failure),
+                  tryAgain: context.read<WeatherCubit>().initialize,
+                ),
+              WeatherFailure() => TryAgainWidget(
+                  error: 'Ops, something went wrong!',
+                  tryAgain: context.read<WeatherCubit>().initialize,
                 ),
               WeatherLoaded() => CustomScrollView(
                   slivers: [

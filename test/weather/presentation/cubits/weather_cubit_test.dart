@@ -2,20 +2,32 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:open_weather/weather/domain/either.dart';
+import 'package:open_weather/weather/domain/entities/location_entity.dart';
 import 'package:open_weather/weather/domain/entities/weather.dart';
 import 'package:open_weather/weather/domain/entities/weather_data_entity.dart';
 import 'package:open_weather/weather/domain/entities/weather_report_entity.dart';
+import 'package:open_weather/weather/domain/failures/location_failure.dart';
+import 'package:open_weather/weather/domain/repositories/location_repository.dart';
 import 'package:open_weather/weather/domain/repositories/weather_repository.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_state.dart';
 
+class LocationRepositoryMock extends Mock implements LocationRepository {}
+
 class WeatherRepositoryMock extends Mock implements WeatherRepository {}
 
 void main() {
+  late LocationRepository locationRepository;
   late WeatherRepository weatherRepository;
+  late WeatherCubit cubit;
 
   setUp(() {
+    locationRepository = LocationRepositoryMock();
     weatherRepository = WeatherRepositoryMock();
+    cubit = WeatherCubit(
+      locationRepository: locationRepository,
+      weatherRepository: weatherRepository,
+    );
   });
 
   const report = WeatherReportEntity(
@@ -30,35 +42,57 @@ void main() {
     hourly: [],
   );
 
-  blocTest<WeatherCubit, WeatherState>(
-    'emits [WeatherLoading, WeatherFailure] when fails to initialize',
-    build: () => WeatherCubit(
-      weatherRepository: weatherRepository,
-    ),
-    setUp: () {
-      when(() => weatherRepository.query())
-          .thenAnswer((_) async => const Left(null));
-    },
-    act: (cubit) => cubit.initialize(),
-    expect: () => const <WeatherState>[
-      WeatherLoading(),
-      WeatherFailure(),
-    ],
+  const location = LocationEntity(
+    latitude: -3.8447967,
+    longitude: -32.46,
   );
 
   blocTest<WeatherCubit, WeatherState>(
-    'emits [WeatherLoading, WeatherLoaded] when initializes successfully',
-    build: () => WeatherCubit(
-      weatherRepository: weatherRepository,
-    ),
+    'emits [WeatherLoading, WeatherLocationFailure] when fails to query the user location',
+    build: () => cubit,
     setUp: () {
-      when(() => weatherRepository.query())
-          .thenAnswer((_) async => const Right(report));
+      when(() => locationRepository.query())
+          .thenAnswer((_) async => const Left(LocationFailure.denied));
     },
     act: (cubit) => cubit.initialize(),
     expect: () => const <WeatherState>[
       WeatherLoading(),
-      WeatherLoaded(report: report),
+      WeatherLocationFailure(failure: LocationFailure.denied),
     ],
   );
+
+  group('weather fetching', () {
+    setUp(() {
+      when(() => locationRepository.query())
+          .thenAnswer((_) async => const Right(location));
+    });
+
+    blocTest<WeatherCubit, WeatherState>(
+      'emits [WeatherLoading, WeatherFailure] when fails to initialize',
+      build: () => cubit,
+      setUp: () {
+        when(() => weatherRepository.query(location: location))
+            .thenAnswer((_) async => const Left(null));
+      },
+      act: (cubit) => cubit.initialize(),
+      expect: () => const <WeatherState>[
+        WeatherLoading(),
+        WeatherFailure(),
+      ],
+    );
+
+    blocTest<WeatherCubit, WeatherState>(
+      'emits [WeatherLoading, WeatherLoaded] when initializes successfully',
+      build: () => cubit,
+      setUp: () {
+        when(() => weatherRepository.query(location: location))
+            .thenAnswer((_) async => const Right(report));
+      },
+      act: (cubit) => cubit.initialize(),
+      expect: () => const <WeatherState>[
+        WeatherLoading(),
+        WeatherLoaded(report: report),
+      ],
+    );
+  });
 }
