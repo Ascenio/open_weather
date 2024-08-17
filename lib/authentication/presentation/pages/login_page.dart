@@ -78,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                     border: OutlineInputBorder(),
                     labelText: 'Your password',
                   ),
+                  obscureText: true,
                   validator: compositeValidator(validators: [
                     nonEmptyValidator(
                       message: 'Please provide a password',
