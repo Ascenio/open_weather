@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:open_weather/weather/data/models/weather_report_model.dart';
+import 'package:open_weather/weather/domain/either.dart';
 import 'package:open_weather/weather/domain/entities/weather_report_entity.dart';
 import 'package:open_weather/weather/domain/repositories/weather_repository.dart';
 
@@ -16,16 +17,16 @@ final class RemoteWeatherRepository implements WeatherRepository {
   final String apiKey;
 
   @override
-  Future<WeatherReportEntity?> query() async {
+  Future<Either<void, WeatherReportEntity>> query() async {
     try {
-      return await _request();
+      return Right(await _request());
     } catch (error, stackTrace) {
       log(
         'Failed to fetch weather data',
         error: error,
         stackTrace: stackTrace,
       );
-      return null;
+      return const Left(null);
     }
   }
 
