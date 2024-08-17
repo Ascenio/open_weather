@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_weather/core/presentation/widgets/loading_indicator.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_state.dart';
 import 'package:open_weather/weather/presentation/widgets/custom_colors.dart';
@@ -30,9 +31,7 @@ class _WeatherPageState extends State<WeatherPage> {
         child: BlocBuilder<WeatherCubit, WeatherState>(
           builder: (context, state) {
             return switch (state) {
-              WeatherLoading() => const Center(
-                  child: CircularProgressIndicator(),
-                ),
+              WeatherLoading() => const LoadingIndicator(),
               WeatherFailure() => Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,

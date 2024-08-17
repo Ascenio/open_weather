@@ -6,6 +6,7 @@ import 'package:open_weather/authentication/presentation/widgets/validators/comp
 import 'package:open_weather/authentication/presentation/widgets/validators/email_validator.dart';
 import 'package:open_weather/authentication/presentation/widgets/validators/minimum_length_validator.dart';
 import 'package:open_weather/authentication/presentation/widgets/validators/non_empty_validator.dart';
+import 'package:open_weather/core/presentation/widgets/loading_indicator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -96,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: switch (state) {
                           LoginLoading() => const Padding(
                               padding: EdgeInsets.all(8),
-                              child: Center(child: CircularProgressIndicator()),
+                              child: LoadingIndicator(),
                             ),
                           _ => SizedBox(
                               width: double.infinity,
