@@ -9,6 +9,7 @@ import 'package:open_weather/authentication/presentation/widgets/validators/mini
 import 'package:open_weather/authentication/presentation/widgets/validators/non_empty_validator.dart';
 import 'package:open_weather/core/config/routes.dart';
 import 'package:open_weather/core/presentation/widgets/loading_indicator.dart';
+import 'package:open_weather/core/presentation/widgets/wide_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -95,19 +96,17 @@ class _LoginPageState extends State<LoginPage> {
                               padding: EdgeInsets.all(8),
                               child: LoadingIndicator(),
                             ),
-                          _ => SizedBox(
-                              width: double.infinity,
-                              child: FilledButton(
-                                child: const Text('Log in'),
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    context.read<LoginCubit>().login(
-                                          email: emailController.text,
-                                          password: passwordController.text,
-                                        );
-                                  }
-                                },
-                              ),
+                          _ => WideButton(
+                              icon: Icons.login_outlined,
+                              label: 'Log in',
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  context.read<LoginCubit>().login(
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                      );
+                                }
+                              },
                             ),
                         },
                       );

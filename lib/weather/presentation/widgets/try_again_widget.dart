@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:open_weather/core/presentation/widgets/wide_button.dart';
 
 class TryAgainWidget extends StatelessWidget {
   const TryAgainWidget({
@@ -23,14 +24,10 @@ class TryAgainWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton.icon(
-              icon: const Icon(Icons.refresh),
-              iconAlignment: IconAlignment.end,
-              label: const Text('Try again'),
-              onPressed: tryAgain,
-            ),
+          WideButton(
+            icon: Icons.refresh,
+            label: 'Try again',
+            onPressed: tryAgain,
           )
         ],
       ),
