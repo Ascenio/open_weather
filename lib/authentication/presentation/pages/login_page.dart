@@ -6,6 +6,7 @@ import 'package:open_weather/authentication/presentation/widgets/validators/comp
 import 'package:open_weather/authentication/presentation/widgets/validators/email_validator.dart';
 import 'package:open_weather/authentication/presentation/widgets/validators/minimum_length_validator.dart';
 import 'package:open_weather/authentication/presentation/widgets/validators/non_empty_validator.dart';
+import 'package:open_weather/core/config/routes.dart';
 import 'package:open_weather/core/presentation/widgets/loading_indicator.dart';
 
 class LoginPage extends StatefulWidget {
@@ -34,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
         if (state is LoginValidCredentials) {
           ScaffoldMessenger.of(context)
               .showSnackBar(const SnackBar(content: Text('Welcome!')));
+          Navigator.of(context).pushReplacementNamed(Routes.weather);
         } else if (state is LoginInvalidCredentials) {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Wrong email or password!')));
