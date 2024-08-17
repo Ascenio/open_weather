@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_weather/authentication/data/repositories/local_authentication_repository.dart';
 import 'package:open_weather/authentication/presentation/cubits/login_cubit.dart';
 import 'package:open_weather/authentication/presentation/pages/login_page.dart';
 import 'package:open_weather/core/config/routes.dart';
@@ -22,12 +23,13 @@ class MainApp extends StatelessWidget {
       theme: ThemeData.from(
         colorScheme: ColorScheme.fromSeed(
           seedColor: CustomColors.primary,
-          primary: CustomColors.primary,
         ),
       ),
       routes: {
         Routes.login: (_) => BlocProvider(
-              create: (_) => LoginCubit(),
+              create: (_) => LoginCubit(
+                authenticationRepository: const LocalAuthenticationRepository(),
+              ),
               child: const LoginPage(),
             ),
         Routes.weather: (_) => BlocProvider(
@@ -41,7 +43,7 @@ class MainApp extends StatelessWidget {
               child: const WeatherPage(),
             ),
       },
-      initialRoute: Routes.weather,
+      initialRoute: Routes.login,
     );
   }
 }
