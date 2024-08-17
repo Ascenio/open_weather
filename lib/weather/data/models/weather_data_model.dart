@@ -6,6 +6,8 @@ final class WeatherDataModel extends WeatherDataEntity {
     required super.temperature,
     required super.pressure,
     required super.humidity,
+    required super.windSpeed,
+    required super.windDegrees,
     required super.weather,
   });
 
@@ -14,6 +16,8 @@ final class WeatherDataModel extends WeatherDataEntity {
       temperature: (json['temp'] as num).toDouble(),
       pressure: json['pressure'],
       humidity: json['humidity'],
+      windSpeed: (json['wind_speed'] as num).toDouble(),
+      windDegrees: (json['wind_deg'] as num).toDouble(),
       weather: WeatherModel.fromJson(
         (json['weather'] as List).cast<Map<String, dynamic>>().first,
       ),

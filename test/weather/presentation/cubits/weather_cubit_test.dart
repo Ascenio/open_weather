@@ -23,6 +23,8 @@ void main() {
       temperature: 33,
       pressure: 1011,
       humidity: 38,
+      windDegrees: 93,
+      windSpeed: 3.1,
       weather: Weather(title: 'Clouds', icon: '04d'),
     ),
     hourly: [],

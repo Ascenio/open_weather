@@ -19,10 +19,11 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.from(
-          colorScheme: ColorScheme.fromSeed(
-        seedColor: CustomColors.primary,
-        primary: CustomColors.primary,
-      )),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: CustomColors.primary,
+          primary: CustomColors.primary,
+        ),
+      ),
       routes: {
         Routes.login: (_) => BlocProvider(
               create: (_) => LoginCubit(),

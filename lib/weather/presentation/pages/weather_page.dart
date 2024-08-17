@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_state.dart';
+import 'package:open_weather/weather/presentation/widgets/custom_colors.dart';
+import 'package:open_weather/weather/presentation/widgets/detailed_icon.dart';
 import 'package:open_weather/weather/presentation/widgets/forecast_graph/forecast_graph.dart';
-import 'package:open_weather/weather/presentation/widgets/weather_icon.dart';
+import 'package:open_weather/weather/presentation/widgets/icons/weather_icon.dart';
+import 'package:open_weather/weather/presentation/widgets/icons/wind_icon.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -86,8 +89,28 @@ class _WeatherPageState extends State<WeatherPage> {
                               ),
                             ],
                           ),
-                          Text('Humidity: ${state.report.current.humidity}%'),
-                          Text('Pressure: ${state.report.current.pressure}hPa'),
+                          IconListItem(
+                            icon: const Icon(
+                              Icons.water_drop_outlined,
+                              color: CustomColors.icons,
+                            ),
+                            label:
+                                'Humidity: ${state.report.current.humidity}%',
+                          ),
+                          IconListItem(
+                            icon: const Icon(
+                              Icons.thermostat_outlined,
+                              color: CustomColors.icons,
+                            ),
+                            label:
+                                'Pressure: ${state.report.current.pressure}hPa',
+                          ),
+                          IconListItem(
+                            icon: WindIcon(
+                              degrees: state.report.current.windDegrees,
+                            ),
+                            label: '${state.report.current.windSpeed}m/s',
+                          ),
                         ],
                       ),
                     ),
