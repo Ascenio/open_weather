@@ -91,18 +91,27 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   child: BlocBuilder<LoginCubit, LoginState>(
                     builder: (context, state) {
-                      return FilledButton(
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 400),
                         child: switch (state) {
-                          LoginLoading() => const CircularProgressIndicator(),
-                          _ => const Text('Log in'),
-                        },
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            context.read<LoginCubit>().login(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                );
-                          }
+                          LoginLoading() => const Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Center(child: CircularProgressIndicator()),
+                            ),
+                          _ => SizedBox(
+                              width: double.infinity,
+                              child: FilledButton(
+                                child: const Text('Log in'),
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    context.read<LoginCubit>().login(
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                        );
+                                  }
+                                },
+                              ),
+                            ),
                         },
                       );
                     },
