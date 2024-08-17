@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_weather/authentication/presentation/cubits/login_cubit.dart';
 import 'package:open_weather/authentication/presentation/cubits/login_state.dart';
+import 'package:open_weather/authentication/presentation/widgets/custom_text_field.dart';
 import 'package:open_weather/authentication/presentation/widgets/validators/composite_validator.dart';
 import 'package:open_weather/authentication/presentation/widgets/validators/email_validator.dart';
 import 'package:open_weather/authentication/presentation/widgets/validators/minimum_length_validator.dart';
@@ -56,28 +57,21 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                CustomTextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Your email',
-                  ),
+                  labelText: 'Your email',
                   validator: compositeValidator(validators: [
                     nonEmptyValidator(
                       message: 'Please provide an email',
                     ),
                     emailValidator
                   ]),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
                 const SizedBox(height: 8),
-                TextFormField(
+                CustomTextField(
                   controller: passwordController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Your password',
-                  ),
+                  labelText: 'Your password',
                   obscureText: true,
                   validator: compositeValidator(validators: [
                     nonEmptyValidator(
@@ -88,7 +82,6 @@ class _LoginPageState extends State<LoginPage> {
                       fieldName: 'password',
                     )
                   ]),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
