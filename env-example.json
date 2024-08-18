@@ -1,4 +1,5 @@
 {
+  "REVERSE_BASE_URL": "https://nominatim.openstreetmap.org/reverse",
   "BASE_URL": "https://api.openweathermap.org/data/3.0/onecall",
   "API_KEY": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 }
