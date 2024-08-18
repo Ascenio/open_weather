@@ -5,17 +5,19 @@ class WideButton extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.onPressed,
+    this.fill = true,
     super.key,
   });
 
   final String label;
   final IconData icon;
   final VoidCallback onPressed;
+  final bool fill;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
+      width: fill ? double.infinity : null,
       child: FilledButton.icon(
         icon: Icon(icon),
         iconAlignment: IconAlignment.end,
