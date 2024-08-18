@@ -1,6 +1,23 @@
 # open_weather
 
-A [Open Weather](https://github.com/nasa/apod-api) consumer app.
+A [Open Weather](https://openweathermap.org) consumer app.
+
+Contains some goodies such as:
+
+- Layered architecture
+- Animations
+- Unit testing
+- API keys via environment variables
+- CI with [GitHub Actions](https://docs.github.com/en/actions)
+
+## Features
+
+- A ~~very secure~~ login system
+  - Accepts only `admin@admin.com` and `admin` as credentials
+- Gets current weather data from [Open Weather](https://openweathermap.org)
+- Responsive to predefined mobile, tablet and desktop breakpoints
+- Uses [Nominatim](https://nominatim.org) for [reverse geocoding](https://en.wikipedia.org/wiki/Reverse_geocoding)
+- Mobile and Web compatible ;)
 
 ## Getting started
 
