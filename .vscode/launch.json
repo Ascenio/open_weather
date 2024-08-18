@@ -2,13 +2,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "debug",
+            "name": "app",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
             "args": [
                 "--dart-define-from-file=env.json"
-            ]
+            ],
+        },
+        {
+            "name": "web",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define-from-file=env.json",
+                "-d",
+                "chrome"
+            ],
         },
     ]
 }
