@@ -19,7 +19,6 @@ class ForecastGraph extends StatelessWidget {
         tween: Tween(begin: 0.0, end: 1.0),
         curve: Curves.ease,
         builder: (context, progress, snapshot) {
-          final colorScheme = Theme.of(context).colorScheme;
           return Card(
             child: Padding(
               padding: const EdgeInsets.all(8),
@@ -27,7 +26,6 @@ class ForecastGraph extends StatelessWidget {
                 painter: ForecastPainter(
                   forecast: forecast,
                   progress: progress,
-                  primaryColor: colorScheme.primary,
                 ),
               ),
             ),
