@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_weather/core/presentation/widgets/breakpoint_builder.dart';
-import 'package:open_weather/core/presentation/widgets/constrained_by_mobile.dart';
+import 'package:open_weather/core/presentation/widgets/constrained_by_breakpoint.dart';
 import 'package:open_weather/core/presentation/widgets/loading_indicator.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_state.dart';
@@ -23,6 +23,7 @@ class WeatherPage extends StatefulWidget {
 class _WeatherPageState extends State<WeatherPage> {
   static const next9Hours = 9;
   static const next8Days = 8;
+  final hourlyKey = GlobalKey();
 
   @override
   void initState() {
@@ -47,13 +48,15 @@ class _WeatherPageState extends State<WeatherPage> {
           builder: (context, state) {
             return switch (state) {
               WeatherLoading() => const LoadingIndicator(),
-              WeatherLocationFailure() => ConstrainedByMobile(
+              WeatherLocationFailure() => ConstrainedByBreakpoint(
+                  breakpoint: Breakpoint.mobile,
                   child: TryAgainWidget(
                     error: locationFailureToString(state.failure),
                     tryAgain: context.read<WeatherCubit>().initialize,
                   ),
                 ),
-              WeatherFailure() => ConstrainedByMobile(
+              WeatherFailure() => ConstrainedByBreakpoint(
+                  breakpoint: Breakpoint.mobile,
                   child: TryAgainWidget(
                     error: 'Ops, something went wrong!',
                     tryAgain: context.read<WeatherCubit>().initialize,
@@ -61,28 +64,89 @@ class _WeatherPageState extends State<WeatherPage> {
                 ),
               WeatherLoaded() => BreakpointBuilder(
                   builder: (breakpoint) {
-                    return ConstrainedByMobile(
-                      child: CustomScrollView(
-                        slivers: [
-                          const SliverWeatherAppBar(),
-                          SliverNowBlock(
-                            current: state.report.current,
+                    return switch (breakpoint) {
+                      Breakpoint.desktop => ConstrainedByBreakpoint(
+                          breakpoint: Breakpoint.desktop,
+                          child: CustomScrollView(
+                            slivers: [
+                              const SliverWeatherAppBar(),
+                              SliverCrossAxisGroup(
+                                slivers: [
+                                  SliverCrossAxisExpanded(
+                                    flex: 1,
+                                    sliver: SliverNowBlock(
+                                      current: state.report.current,
+                                    ),
+                                  ),
+                                  SliverCrossAxisExpanded(
+                                    flex: 2,
+                                    sliver: SliverPadding(
+                                      padding: const EdgeInsets.only(right: 32),
+                                      sliver: SliverHourlyForecastBlock(
+                                        key: hourlyKey,
+                                        forecast: state.report.hourly
+                                            .take(next9Hours)
+                                            .toList(),
+                                      ),
+                                    ),
+                                  ),
+                                  SliverCrossAxisExpanded(
+                                    flex: 1,
+                                    sliver: SliverDailyForecastBlock(
+                                      daily: state.report.daily
+                                          .take(next8Days)
+                                          .toList(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          const SliverPadding(
-                              padding: EdgeInsets.only(bottom: 32)),
-                          SliverHourlyForecastBlock(
-                            forecast:
-                                state.report.hourly.take(next9Hours).toList(),
-                          ),
-                          const SliverPadding(
-                            padding: EdgeInsets.only(bottom: 32),
-                          ),
-                          SliverDailyForecastBlock(
-                            daily: state.report.daily.take(next8Days).toList(),
-                          ),
-                        ],
-                      ),
-                    );
+                        ),
+                      Breakpoint.tablet => CustomScrollView(
+                          slivers: [
+                            const SliverWeatherAppBar(),
+                            SliverCrossAxisGroup(slivers: [
+                              SliverNowBlock(
+                                current: state.report.current,
+                              ),
+                              SliverHourlyForecastBlock(
+                                key: hourlyKey,
+                                forecast: state.report.hourly
+                                    .take(next9Hours)
+                                    .toList(),
+                              ),
+                            ]),
+                            SliverDailyForecastBlock(
+                              daily:
+                                  state.report.daily.take(next8Days).toList(),
+                            ),
+                          ],
+                        ),
+                      Breakpoint.mobile => CustomScrollView(
+                          slivers: [
+                            const SliverWeatherAppBar(),
+                            SliverNowBlock(
+                              current: state.report.current,
+                            ),
+                            const SliverPadding(
+                              padding: EdgeInsets.only(bottom: 32),
+                            ),
+                            SliverHourlyForecastBlock(
+                              key: hourlyKey,
+                              forecast:
+                                  state.report.hourly.take(next9Hours).toList(),
+                            ),
+                            const SliverPadding(
+                              padding: EdgeInsets.only(bottom: 32),
+                            ),
+                            SliverDailyForecastBlock(
+                              daily:
+                                  state.report.daily.take(next8Days).toList(),
+                            ),
+                          ],
+                        ),
+                    };
                   },
                 ),
             };

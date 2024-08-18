@@ -10,7 +10,7 @@ import 'package:open_weather/authentication/presentation/widgets/validators/mini
 import 'package:open_weather/authentication/presentation/widgets/validators/non_empty_validator.dart';
 import 'package:open_weather/core/config/routes.dart';
 import 'package:open_weather/core/presentation/widgets/breakpoint_builder.dart';
-import 'package:open_weather/core/presentation/widgets/constrained_by_mobile.dart';
+import 'package:open_weather/core/presentation/widgets/constrained_by_breakpoint.dart';
 import 'package:open_weather/core/presentation/widgets/loading_indicator.dart';
 import 'package:open_weather/core/presentation/widgets/wide_button.dart';
 
@@ -49,7 +49,8 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: ConstrainedByMobile(
+          child: ConstrainedByBreakpoint(
+            breakpoint: Breakpoint.mobile,
             child: Form(
               key: formKey,
               child: Column(

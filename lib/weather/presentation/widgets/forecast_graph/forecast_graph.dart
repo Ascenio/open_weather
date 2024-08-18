@@ -13,25 +13,22 @@ class ForecastGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = DefaultTextStyle.of(context).style.color!;
-    return AspectRatio(
-      aspectRatio: 4 / 3,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: TweenAnimationBuilder(
-            duration: const Duration(seconds: 2),
-            tween: Tween(begin: 0.0, end: 1.0),
-            curve: Curves.ease,
-            builder: (_, progress, __) {
-              return CustomPaint(
-                painter: ForecastPainter(
-                  forecast: forecast,
-                  progress: progress,
-                  textColor: color,
-                ),
-              );
-            },
-          ),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: TweenAnimationBuilder(
+          duration: const Duration(seconds: 2),
+          tween: Tween(begin: 0.0, end: 1.0),
+          curve: Curves.ease,
+          builder: (_, progress, __) {
+            return CustomPaint(
+              painter: ForecastPainter(
+                forecast: forecast,
+                progress: progress,
+                textColor: color,
+              ),
+            );
+          },
         ),
       ),
     );

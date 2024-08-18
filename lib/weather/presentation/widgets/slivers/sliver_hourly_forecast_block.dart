@@ -22,8 +22,11 @@ class SliverHourlyForecastBlock extends StatelessWidget {
         ),
         const SliverPadding(padding: EdgeInsets.only(bottom: 8)),
         SliverToBoxAdapter(
-          child: ForecastGraph(
-            forecast: forecast,
+          child: AspectRatio(
+            aspectRatio: 4 / 3,
+            child: ForecastGraph(
+              forecast: forecast,
+            ),
           ),
         ),
       ],

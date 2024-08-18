@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:open_weather/core/presentation/widgets/breakpoint_builder.dart';
 
-class ConstrainedByMobile extends StatelessWidget {
-  const ConstrainedByMobile({required this.child, super.key});
+class ConstrainedByBreakpoint extends StatelessWidget {
+  const ConstrainedByBreakpoint({
+    required this.breakpoint,
+    required this.child,
+    super.key,
+  });
 
+  final Breakpoint breakpoint;
   final Widget child;
 
   @override
@@ -11,7 +16,7 @@ class ConstrainedByMobile extends StatelessWidget {
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints.loose(
-          Size.fromWidth(Breakpoint.mobile.minimumWidth),
+          Size.fromWidth(breakpoint.minimumWidth),
         ),
         child: child,
       ),
