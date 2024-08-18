@@ -135,7 +135,7 @@ class _WeatherPageState extends State<WeatherPage> {
                         ),
                       ),
                       const SliverPadding(padding: EdgeInsets.only(bottom: 8)),
-                      SliverDailyForecast(
+                      SliverDailyForecast.sliverList(
                         daily: state.report.daily.take(next8Days).toList(),
                       ),
                     ],
