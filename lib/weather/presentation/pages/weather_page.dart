@@ -10,6 +10,7 @@ import 'package:open_weather/weather/presentation/widgets/failure_mappers.dart';
 import 'package:open_weather/weather/presentation/widgets/forecast_graph/forecast_graph.dart';
 import 'package:open_weather/weather/presentation/widgets/icons/weather_icon.dart';
 import 'package:open_weather/weather/presentation/widgets/icons/wind_icon.dart';
+import 'package:open_weather/weather/presentation/widgets/slivers/sliver_daily_forecast.dart';
 import 'package:open_weather/weather/presentation/widgets/try_again_widget.dart';
 
 class WeatherPage extends StatefulWidget {
@@ -21,6 +22,7 @@ class WeatherPage extends StatefulWidget {
 
 class _WeatherPageState extends State<WeatherPage> {
   static const next9Hours = 9;
+  static const next8Days = 8;
 
   @override
   void initState() {
@@ -87,6 +89,7 @@ class _WeatherPageState extends State<WeatherPage> {
                                   ),
                                 ),
                                 WeatherIcon(
+                                  size: 64,
                                   icon: state.report.current.weather.icon,
                                 ),
                               ],
@@ -123,7 +126,18 @@ class _WeatherPageState extends State<WeatherPage> {
                           forecast:
                               state.report.hourly.take(next9Hours).toList(),
                         ),
-                      )
+                      ),
+                      const SliverPadding(padding: EdgeInsets.only(bottom: 32)),
+                      const SliverToBoxAdapter(
+                        child: Text(
+                          '8-day forecast',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      const SliverPadding(padding: EdgeInsets.only(bottom: 8)),
+                      SliverDailyForecast(
+                        daily: state.report.daily.take(next8Days).toList(),
+                      ),
                     ],
                   ),
                 ),
