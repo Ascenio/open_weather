@@ -20,6 +20,8 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
+  static const next9Hours = 9;
+
   @override
   void initState() {
     super.initState();
@@ -101,8 +103,8 @@ class _WeatherPageState extends State<WeatherPage> {
                                 'Pressure: ${state.report.current.pressure}hPa',
                           ),
                           IconListItem(
-                            icon: WindIcon(
-                              degrees: state.report.current.windDegrees,
+                            icon: const WindIcon(
+                              degrees: 90,
                             ),
                             label: '${state.report.current.windSpeed}m/s',
                           ),
@@ -119,7 +121,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     const SliverPadding(padding: EdgeInsets.only(bottom: 8)),
                     SliverToBoxAdapter(
                       child: ForecastGraph(
-                        forecast: state.report.hourly,
+                        forecast: state.report.hourly.take(next9Hours).toList(),
                       ),
                     )
                   ],
