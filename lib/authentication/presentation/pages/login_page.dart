@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_weather/authentication/presentation/cubits/login_cubit.dart';
 import 'package:open_weather/authentication/presentation/cubits/login_state.dart';
 import 'package:open_weather/authentication/presentation/widgets/custom_text_field.dart';
+import 'package:open_weather/authentication/presentation/widgets/logo.dart';
 import 'package:open_weather/authentication/presentation/widgets/validators/composite_validator.dart';
 import 'package:open_weather/authentication/presentation/widgets/validators/email_validator.dart';
 import 'package:open_weather/authentication/presentation/widgets/validators/minimum_length_validator.dart';
@@ -129,16 +130,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-}
-
-class Logo extends StatelessWidget {
-  const Logo({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset('assets/logo.png');
   }
 }
