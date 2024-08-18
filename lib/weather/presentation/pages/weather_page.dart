@@ -57,72 +57,75 @@ class _WeatherPageState extends State<WeatherPage> {
                     tryAgain: context.read<WeatherCubit>().initialize,
                   ),
                 ),
-              WeatherLoaded() => CustomScrollView(
-                  slivers: [
-                    const SliverAppBar(
-                      title: Text('Open Weather 🌥️'),
-                      snap: true,
-                      floating: true,
-                    ),
-                    const SliverToBoxAdapter(
-                      child: Text(
-                        'Now',
-                        style: TextStyle(fontSize: 20),
+              WeatherLoaded() => ConstrainedByMobile(
+                  child: CustomScrollView(
+                    slivers: [
+                      const SliverAppBar(
+                        title: Text('Open Weather 🌥️'),
+                        snap: true,
+                        floating: true,
                       ),
-                    ),
-                    const SliverPadding(padding: EdgeInsets.only(bottom: 8)),
-                    SliverToBoxAdapter(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                '${state.report.current.temperature}°C',
-                                style: const TextStyle(
-                                  fontSize: 28,
+                      const SliverToBoxAdapter(
+                        child: Text(
+                          'Now',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      const SliverPadding(padding: EdgeInsets.only(bottom: 8)),
+                      SliverToBoxAdapter(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  '${state.report.current.temperature}°C',
+                                  style: const TextStyle(
+                                    fontSize: 28,
+                                  ),
                                 ),
-                              ),
-                              WeatherIcon(
-                                icon: state.report.current.weather.icon,
-                              ),
-                            ],
-                          ),
-                          IconListItem(
-                            icon: const Icon(Icons.water_drop_outlined),
-                            label:
-                                'Humidity: ${state.report.current.humidity}%',
-                          ),
-                          IconListItem(
-                            icon: const Icon(Icons.thermostat_outlined),
-                            label:
-                                'Pressure: ${state.report.current.pressure}hPa',
-                          ),
-                          IconListItem(
-                            icon: WindIcon(
-                              degrees: state.report.current.windDegrees,
+                                WeatherIcon(
+                                  icon: state.report.current.weather.icon,
+                                ),
+                              ],
                             ),
-                            label: '${state.report.current.windSpeed}m/s',
-                          ),
-                        ],
+                            IconListItem(
+                              icon: const Icon(Icons.water_drop_outlined),
+                              label:
+                                  'Humidity: ${state.report.current.humidity}%',
+                            ),
+                            IconListItem(
+                              icon: const Icon(Icons.thermostat_outlined),
+                              label:
+                                  'Pressure: ${state.report.current.pressure}hPa',
+                            ),
+                            IconListItem(
+                              icon: WindIcon(
+                                degrees: state.report.current.windDegrees,
+                              ),
+                              label: '${state.report.current.windSpeed}m/s',
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SliverPadding(padding: EdgeInsets.only(bottom: 32)),
-                    const SliverToBoxAdapter(
-                      child: Text(
-                        'Hourly forecast',
-                        style: TextStyle(fontSize: 20),
+                      const SliverPadding(padding: EdgeInsets.only(bottom: 32)),
+                      const SliverToBoxAdapter(
+                        child: Text(
+                          'Hourly forecast',
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
-                    ),
-                    const SliverPadding(padding: EdgeInsets.only(bottom: 8)),
-                    SliverToBoxAdapter(
-                      child: ForecastGraph(
-                        forecast: state.report.hourly.take(next9Hours).toList(),
-                      ),
-                    )
-                  ],
+                      const SliverPadding(padding: EdgeInsets.only(bottom: 8)),
+                      SliverToBoxAdapter(
+                        child: ForecastGraph(
+                          forecast:
+                              state.report.hourly.take(next9Hours).toList(),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
             };
           },
