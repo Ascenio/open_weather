@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_weather/core/presentation/widgets/loading_indicator.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_state.dart';
-import 'package:open_weather/weather/presentation/widgets/custom_colors.dart';
 import 'package:open_weather/weather/presentation/widgets/detailed_icon.dart';
 import 'package:open_weather/weather/presentation/widgets/dialogs/location_failure_dialog.dart';
 import 'package:open_weather/weather/presentation/widgets/failure_mappers.dart';
@@ -87,25 +86,17 @@ class _WeatherPageState extends State<WeatherPage> {
                             ],
                           ),
                           IconListItem(
-                            icon: const Icon(
-                              Icons.water_drop_outlined,
-                              color: CustomColors.icons,
-                            ),
+                            icon: const Icon(Icons.water_drop_outlined),
                             label:
                                 'Humidity: ${state.report.current.humidity}%',
                           ),
                           IconListItem(
-                            icon: const Icon(
-                              Icons.thermostat_outlined,
-                              color: CustomColors.icons,
-                            ),
+                            icon: const Icon(Icons.thermostat_outlined),
                             label:
                                 'Pressure: ${state.report.current.pressure}hPa',
                           ),
                           IconListItem(
-                            icon: const WindIcon(
-                              degrees: 90,
-                            ),
+                            icon: const WindIcon(degrees: 90),
                             label: '${state.report.current.windSpeed}m/s',
                           ),
                         ],

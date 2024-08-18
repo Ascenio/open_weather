@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:open_weather/weather/presentation/widgets/custom_colors.dart';
 
 class WindIcon extends StatelessWidget {
   const WindIcon({
@@ -15,10 +14,7 @@ class WindIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Transform.rotate(
       angle: pi / 4 - pi / 2 - degrees * (pi / 180),
-      child: const Icon(
-        Icons.near_me_outlined,
-        color: CustomColors.icons,
-      ),
+      child: const Icon(Icons.near_me_outlined),
     );
   }
 }
