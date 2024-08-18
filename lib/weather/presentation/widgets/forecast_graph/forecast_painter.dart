@@ -10,6 +10,7 @@ final class ForecastPainter extends CustomPainter {
   const ForecastPainter({
     required this.forecast,
     required this.progress,
+    required this.textColor,
     this.stepSize = 5,
     this.textMargin = 32,
     super.repaint,
@@ -17,6 +18,7 @@ final class ForecastPainter extends CustomPainter {
 
   final List<WeatherDataEntity> forecast;
   final double progress;
+  final Color textColor;
   final int stepSize;
   final double textMargin;
 
@@ -119,7 +121,7 @@ final class ForecastPainter extends CustomPainter {
   }) {
     final paragraphBuilder = ParagraphBuilder(ParagraphStyle())
       ..pushStyle(TextStyle(
-        color: Colors.black,
+        color: textColor,
       ))
       ..addText(text);
     final paragraph = paragraphBuilder.build();
