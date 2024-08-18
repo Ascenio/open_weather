@@ -12,7 +12,7 @@ final class ForecastPainter extends CustomPainter {
     required this.progress,
     required this.textColor,
     this.stepSize = 5,
-    this.textMargin = 32,
+    this.textMargin = 24,
     super.repaint,
   });
 
@@ -76,6 +76,12 @@ final class ForecastPainter extends CustomPainter {
                 max: maximum.toDouble(),
               ));
       canvas.drawParagraph(paragraph, Offset(0, dy));
+      final lineDy = dy + paragraph.height / 2;
+      canvas.drawLine(
+        Offset(textMargin, lineDy),
+        Offset(size.width, lineDy),
+        Paint()..color = textColor.withOpacity(0.2),
+      );
     }
   }
 
