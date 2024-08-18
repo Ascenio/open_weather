@@ -14,7 +14,7 @@ class WindIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Transform.rotate(
-      angle: pi / 4 - degrees * pi / 180,
+      angle: pi / 4 + pi - degrees * pi / 180,
       child: const Icon(
         Icons.near_me_outlined,
         color: CustomColors.icons,
