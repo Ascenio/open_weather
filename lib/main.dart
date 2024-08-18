@@ -8,7 +8,6 @@ import 'package:open_weather/weather/data/repositories/remote_weather_repository
 import 'package:open_weather/weather/data/repositories/system_location_repository.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
 import 'package:open_weather/weather/presentation/pages/weather_page.dart';
-import 'package:open_weather/weather/presentation/widgets/custom_colors.dart';
 
 void main() {
   runApp(const MainApp());
@@ -20,11 +19,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: CustomColors.primary,
-        ),
-      ),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       routes: {
         Routes.login: (_) => BlocProvider(
               create: (_) => LoginCubit(
