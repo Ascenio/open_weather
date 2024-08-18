@@ -12,14 +12,12 @@ void main() {
   late HttpClient httpClient;
   late RemoteWeatherRepository weatherRepository;
 
-  const baseUrl = 'https://api.openweathermap.org/data/3.0/onecall';
   const apiKey = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
 
   setUp(() {
     httpClient = HttpClientMock();
     weatherRepository = RemoteWeatherRepository(
       httpClient: httpClient,
-      baseUrl: baseUrl,
       apiKey: apiKey,
     );
   });
@@ -33,14 +31,14 @@ void main() {
   };
 
   test('when an exception is thrown, should return left', () async {
-    when(() => httpClient.request(baseUrl, queryParameters: queryParameters))
+    when(() => httpClient.request(queryParameters: queryParameters))
         .thenThrow(Exception('error'));
     final result = await weatherRepository.query(location: location);
     expect(result, const Left<void, WeatherReportEntity>(null));
   });
 
   test('on success should return a report', () async {
-    when(() => httpClient.request(baseUrl, queryParameters: queryParameters))
+    when(() => httpClient.request(queryParameters: queryParameters))
         .thenAnswer((_) async => json);
     final result = await weatherRepository.query(location: location);
     expect(result, isA<Right<void, WeatherReportEntity>>());

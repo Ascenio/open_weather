@@ -66,6 +66,7 @@ class _WeatherPageState extends State<WeatherPage> {
                   builder: (breakpoint) {
                     final nowBlock = SliverNowBlock(
                       current: state.report.current,
+                      address: state.address,
                     );
                     final hourlyForecastBlock = SliverHourlyForecastBlock(
                       key: hourlyKey,

@@ -4,6 +4,8 @@ import 'package:open_weather/authentication/data/repositories/local_authenticati
 import 'package:open_weather/authentication/presentation/cubits/login_cubit.dart';
 import 'package:open_weather/authentication/presentation/pages/login_page.dart';
 import 'package:open_weather/core/config/routes.dart';
+import 'package:open_weather/core/data/external_http_client.dart';
+import 'package:open_weather/weather/data/repositories/remote_reverse_location_repository.dart';
 import 'package:open_weather/weather/data/repositories/remote_weather_repository.dart';
 import 'package:open_weather/weather/data/repositories/system_location_repository.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
@@ -32,8 +34,16 @@ class MainApp extends StatelessWidget {
         Routes.weather: (_) => BlocProvider(
               create: (_) => WeatherCubit(
                 locationRepository: SystemLocationRepository(),
+                reverseLocationRepository:
+                    const RemoteReverseLocationRepository(
+                  httpClient: ExternalHttpClient(
+                    url: String.fromEnvironment('REVERSE_BASE_URL'),
+                  ),
+                ),
                 weatherRepository: const RemoteWeatherRepository(
-                  baseUrl: String.fromEnvironment('BASE_URL'),
+                  httpClient: ExternalHttpClient(
+                    url: String.fromEnvironment('BASE_URL'),
+                  ),
                   apiKey: String.fromEnvironment('API_KEY'),
                 ),
               ),

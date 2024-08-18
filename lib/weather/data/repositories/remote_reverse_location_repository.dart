@@ -1,37 +1,32 @@
 import 'dart:developer';
 
 import 'package:open_weather/core/data/http_client.dart';
-import 'package:open_weather/weather/data/models/weather_report_model.dart';
+import 'package:open_weather/weather/data/models/address_model.dart';
 import 'package:open_weather/weather/domain/either.dart';
+import 'package:open_weather/weather/domain/entities/address_entity.dart';
 import 'package:open_weather/weather/domain/entities/location_entity.dart';
-import 'package:open_weather/weather/domain/entities/weather_report_entity.dart';
-import 'package:open_weather/weather/domain/repositories/weather_repository.dart';
+import 'package:open_weather/weather/domain/repositories/reverse_location_repository.dart';
 
-final class RemoteWeatherRepository implements WeatherRepository {
-  const RemoteWeatherRepository({
-    required this.httpClient,
-    required this.apiKey,
-  });
+class RemoteReverseLocationRepository implements ReverseLocationRepository {
+  const RemoteReverseLocationRepository({required this.httpClient});
 
   final HttpClient httpClient;
-  final String apiKey;
 
   @override
-  Future<Either<void, WeatherReportEntity>> query({
+  Future<Either<void, AddressEntity>> query({
     required LocationEntity location,
   }) async {
     try {
       final json = await httpClient.request(queryParameters: {
         'lat': location.latitude.toString(),
         'lon': location.longitude.toString(),
-        'appid': apiKey,
-        'units': 'metric',
+        'format': 'json',
       });
-      final report = WeatherReportModel.fromJson(json);
+      final report = AddressModel.fromJson(json);
       return Right(report);
     } catch (error, stackTrace) {
       log(
-        'Failed to fetch weather data',
+        'Failed to fetch address',
         error: error,
         stackTrace: stackTrace,
       );

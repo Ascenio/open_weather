@@ -1,6 +1,5 @@
 abstract interface class HttpClient {
-  Future<T> request<T>(
-    String url, {
+  Future<T> request<T>({
     Map<String, String>? queryParameters,
   });
 }

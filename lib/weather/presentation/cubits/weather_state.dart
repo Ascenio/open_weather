@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:open_weather/weather/domain/entities/address_entity.dart';
 import 'package:open_weather/weather/domain/entities/weather_report_entity.dart';
 import 'package:open_weather/weather/domain/failures/location_failure.dart';
 
@@ -28,10 +29,16 @@ final class WeatherFailure extends WeatherState {
 final class WeatherLoaded extends WeatherState {
   const WeatherLoaded({
     required this.report,
+    this.address,
   });
 
   final WeatherReportEntity report;
+  final AddressEntity? address;
 
   @override
-  List<Object?> get props => [super.props, report];
+  List<Object?> get props => [
+        super.props,
+        report,
+        address,
+      ];
 }

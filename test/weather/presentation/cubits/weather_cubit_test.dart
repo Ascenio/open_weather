@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:open_weather/weather/domain/either.dart';
+import 'package:open_weather/weather/domain/entities/address_entity.dart';
 import 'package:open_weather/weather/domain/entities/location_entity.dart';
 import 'package:open_weather/weather/domain/entities/weather.dart';
 import 'package:open_weather/weather/domain/entities/weather_daily_data_entity.dart';
@@ -9,9 +10,13 @@ import 'package:open_weather/weather/domain/entities/weather_data_entity.dart';
 import 'package:open_weather/weather/domain/entities/weather_report_entity.dart';
 import 'package:open_weather/weather/domain/failures/location_failure.dart';
 import 'package:open_weather/weather/domain/repositories/location_repository.dart';
+import 'package:open_weather/weather/domain/repositories/reverse_location_repository.dart';
 import 'package:open_weather/weather/domain/repositories/weather_repository.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_state.dart';
+
+class ReverseLocationRepositoryMock extends Mock
+    implements ReverseLocationRepository {}
 
 class LocationRepositoryMock extends Mock implements LocationRepository {}
 
@@ -19,13 +24,16 @@ class WeatherRepositoryMock extends Mock implements WeatherRepository {}
 
 void main() {
   late LocationRepository locationRepository;
+  late ReverseLocationRepository reverseLocationRepository;
   late WeatherRepository weatherRepository;
   late WeatherCubit cubit;
 
   setUp(() {
     locationRepository = LocationRepositoryMock();
+    reverseLocationRepository = ReverseLocationRepositoryMock();
     weatherRepository = WeatherRepositoryMock();
     cubit = WeatherCubit(
+      reverseLocationRepository: reverseLocationRepository,
       locationRepository: locationRepository,
       weatherRepository: weatherRepository,
     );
@@ -55,6 +63,7 @@ void main() {
     latitude: -3.8447967,
     longitude: -32.46,
   );
+  const address = AddressEntity(city: 'Fernando de Noronha', state: 'PB');
 
   blocTest<WeatherCubit, WeatherState>(
     'emits [WeatherLoading, WeatherLocationFailure] when fails to query the user location',
@@ -82,6 +91,8 @@ void main() {
       setUp: () {
         when(() => weatherRepository.query(location: location))
             .thenAnswer((_) async => const Left(null));
+        when(() => reverseLocationRepository.query(location: location))
+            .thenAnswer((_) async => const Right(address));
       },
       act: (cubit) => cubit.initialize(),
       expect: () => const <WeatherState>[
@@ -96,6 +107,24 @@ void main() {
       setUp: () {
         when(() => weatherRepository.query(location: location))
             .thenAnswer((_) async => Right(report));
+        when(() => reverseLocationRepository.query(location: location))
+            .thenAnswer((_) async => const Right(address));
+      },
+      act: (cubit) => cubit.initialize(),
+      expect: () => <WeatherState>[
+        const WeatherLoading(),
+        WeatherLoaded(report: report, address: address),
+      ],
+    );
+
+    blocTest<WeatherCubit, WeatherState>(
+      'emits [WeatherLoading, WeatherLoaded] when initializes successfully but fails to load address',
+      build: () => cubit,
+      setUp: () {
+        when(() => weatherRepository.query(location: location))
+            .thenAnswer((_) async => Right(report));
+        when(() => reverseLocationRepository.query(location: location))
+            .thenAnswer((_) async => const Left(null));
       },
       act: (cubit) => cubit.initialize(),
       expect: () => <WeatherState>[
