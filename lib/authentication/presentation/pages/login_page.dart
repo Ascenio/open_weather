@@ -54,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Logo(),
                   const Text(
                     'Open Weather',
                     style: TextStyle(
@@ -128,5 +129,16 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+}
+
+class Logo extends StatelessWidget {
+  const Logo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset('assets/logo.png');
   }
 }
