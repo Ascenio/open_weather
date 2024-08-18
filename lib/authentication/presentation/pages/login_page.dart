@@ -91,43 +91,39 @@ class _LoginPageState extends State<LoginPage> {
                       ]),
                     ),
                     const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: BlocBuilder<LoginCubit, LoginState>(
-                        builder: (context, state) {
-                          return AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 400),
-                            child: switch (state) {
-                              LoginLoading() => const Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: LoadingIndicator(),
-                                ),
-                              _ => BreakpointBuilder(
+                    BlocBuilder<LoginCubit, LoginState>(
+                      builder: (context, state) {
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 400),
+                          child: switch (state) {
+                            LoginLoading() => const Padding(
+                                padding: EdgeInsets.all(8),
+                                child: LoadingIndicator(),
+                              ),
+                            _ => Align(
+                                alignment: Alignment.centerRight,
+                                child: BreakpointBuilder(
                                   builder: (breakpoint) {
-                                    return Align(
-                                      alignment: Alignment.centerRight,
-                                      child: WideButton(
-                                        fill: breakpoint != Breakpoint.desktop,
-                                        icon: Icons.login_outlined,
-                                        label: 'Log in',
-                                        onPressed: () {
-                                          if (formKey.currentState!
-                                              .validate()) {
-                                            context.read<LoginCubit>().login(
-                                                  email: emailController.text,
-                                                  password:
-                                                      passwordController.text,
-                                                );
-                                          }
-                                        },
-                                      ),
+                                    return WideButton(
+                                      fill: breakpoint != Breakpoint.desktop,
+                                      icon: Icons.login_outlined,
+                                      label: 'Log in',
+                                      onPressed: () {
+                                        if (formKey.currentState!.validate()) {
+                                          context.read<LoginCubit>().login(
+                                                email: emailController.text,
+                                                password:
+                                                    passwordController.text,
+                                              );
+                                        }
+                                      },
                                     );
                                   },
                                 ),
-                            },
-                          );
-                        },
-                      ),
+                              ),
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
