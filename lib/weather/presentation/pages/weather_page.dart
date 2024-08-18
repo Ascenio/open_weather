@@ -96,7 +96,9 @@ class _WeatherPageState extends State<WeatherPage> {
                                 'Pressure: ${state.report.current.pressure}hPa',
                           ),
                           IconListItem(
-                            icon: const WindIcon(degrees: 90),
+                            icon: WindIcon(
+                              degrees: state.report.current.windDegrees,
+                            ),
                             label: '${state.report.current.windSpeed}m/s',
                           ),
                         ],
