@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_weather/core/presentation/widgets/constrained_by_mobile.dart';
 import 'package:open_weather/core/presentation/widgets/loading_indicator.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_cubit.dart';
 import 'package:open_weather/weather/presentation/cubits/weather_state.dart';
@@ -44,13 +45,17 @@ class _WeatherPageState extends State<WeatherPage> {
           builder: (context, state) {
             return switch (state) {
               WeatherLoading() => const LoadingIndicator(),
-              WeatherLocationFailure() => TryAgainWidget(
-                  error: locationFailureToString(state.failure),
-                  tryAgain: context.read<WeatherCubit>().initialize,
+              WeatherLocationFailure() => ConstrainedByMobile(
+                  child: TryAgainWidget(
+                    error: locationFailureToString(state.failure),
+                    tryAgain: context.read<WeatherCubit>().initialize,
+                  ),
                 ),
-              WeatherFailure() => TryAgainWidget(
-                  error: 'Ops, something went wrong!',
-                  tryAgain: context.read<WeatherCubit>().initialize,
+              WeatherFailure() => ConstrainedByMobile(
+                  child: TryAgainWidget(
+                    error: 'Ops, something went wrong!',
+                    tryAgain: context.read<WeatherCubit>().initialize,
+                  ),
                 ),
               WeatherLoaded() => CustomScrollView(
                   slivers: [
