@@ -64,6 +64,16 @@ class _WeatherPageState extends State<WeatherPage> {
                 ),
               WeatherLoaded() => BreakpointBuilder(
                   builder: (breakpoint) {
+                    final nowBlock = SliverNowBlock(
+                      current: state.report.current,
+                    );
+                    final hourlyForecastBlock = SliverHourlyForecastBlock(
+                      key: hourlyKey,
+                      forecast: state.report.hourly.take(next9Hours).toList(),
+                    );
+                    final dailyForecastBlock = SliverDailyForecastBlock(
+                      daily: state.report.daily.take(next8Days).toList(),
+                    );
                     return switch (breakpoint) {
                       Breakpoint.desktop => ConstrainedByBreakpoint(
                           breakpoint: Breakpoint.desktop,
@@ -74,29 +84,18 @@ class _WeatherPageState extends State<WeatherPage> {
                                 slivers: [
                                   SliverCrossAxisExpanded(
                                     flex: 1,
-                                    sliver: SliverNowBlock(
-                                      current: state.report.current,
-                                    ),
+                                    sliver: nowBlock,
                                   ),
                                   SliverCrossAxisExpanded(
                                     flex: 2,
                                     sliver: SliverPadding(
                                       padding: const EdgeInsets.only(right: 32),
-                                      sliver: SliverHourlyForecastBlock(
-                                        key: hourlyKey,
-                                        forecast: state.report.hourly
-                                            .take(next9Hours)
-                                            .toList(),
-                                      ),
+                                      sliver: hourlyForecastBlock,
                                     ),
                                   ),
                                   SliverCrossAxisExpanded(
                                     flex: 1,
-                                    sliver: SliverDailyForecastBlock(
-                                      daily: state.report.daily
-                                          .take(next8Days)
-                                          .toList(),
-                                    ),
+                                    sliver: dailyForecastBlock,
                                   ),
                                 ],
                               ),
@@ -106,44 +105,27 @@ class _WeatherPageState extends State<WeatherPage> {
                       Breakpoint.tablet => CustomScrollView(
                           slivers: [
                             const SliverWeatherAppBar(),
-                            SliverCrossAxisGroup(slivers: [
-                              SliverNowBlock(
-                                current: state.report.current,
-                              ),
-                              SliverHourlyForecastBlock(
-                                key: hourlyKey,
-                                forecast: state.report.hourly
-                                    .take(next9Hours)
-                                    .toList(),
-                              ),
-                            ]),
-                            SliverDailyForecastBlock(
-                              daily:
-                                  state.report.daily.take(next8Days).toList(),
+                            SliverCrossAxisGroup(
+                              slivers: [
+                                nowBlock,
+                                hourlyForecastBlock,
+                              ],
                             ),
+                            dailyForecastBlock,
                           ],
                         ),
                       Breakpoint.mobile => CustomScrollView(
                           slivers: [
                             const SliverWeatherAppBar(),
-                            SliverNowBlock(
-                              current: state.report.current,
-                            ),
+                            nowBlock,
                             const SliverPadding(
                               padding: EdgeInsets.only(bottom: 32),
                             ),
-                            SliverHourlyForecastBlock(
-                              key: hourlyKey,
-                              forecast:
-                                  state.report.hourly.take(next9Hours).toList(),
-                            ),
+                            hourlyForecastBlock,
                             const SliverPadding(
                               padding: EdgeInsets.only(bottom: 32),
                             ),
-                            SliverDailyForecastBlock(
-                              daily:
-                                  state.report.daily.take(next8Days).toList(),
-                            ),
+                            dailyForecastBlock,
                           ],
                         ),
                     };
